@@ -34,7 +34,7 @@
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 						<% if (typeof user == 'object' && user) { %>
-							<li class="<%= (nav=='Tracks')? 'active':'' %>"><a href="/tracks">Tracks</a></li>
+							<li class="<%= (nav=='Tags')? 'active':'' %>"><a href="/tags">Tags</a></li>
 							<li class="dropdown user<%= (nav=='Authentication')? 'active':'' %>">
 								<a class="dropdown-toggle" href="#" data-toggle="dropdown"><%= user.user_name %> <strong class="caret"></strong></a>
 								<div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
