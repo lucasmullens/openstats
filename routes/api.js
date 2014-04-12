@@ -3,7 +3,7 @@
  */
 
 exports.index = function(req, res) {
-    res.render('api', {});
+    res.send(200, {"Wat?":"Hey you, yeah, you, this route makes no sense. Go to http://openTrack.in/docs to learn more!"});
 };
 exports.track = function(req, res) {
 	
@@ -22,4 +22,4 @@ exports.track = function(req, res) {
 };
 var apiKeyValid = function(key){
 	return true;
-};
+}
