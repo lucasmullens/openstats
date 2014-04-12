@@ -85,13 +85,13 @@ var fail = function(path){
 
 
 //posts
-post("/api/track", {"API_KEY":"asdfasdf", "tag":"gameplay", "data":{"level": 1}}, function(err, data, path){
+post("/api/track", {"API_KEY":"test", "tag":"gameplay", "data":{"level": 1}}, function(err, data, path){
 	if(data.success == true)
 		success(path);
 	else
 		fail(path);
  });
-post("/api/track", {"API_KEY":"asdfasdf", "data":{"level": 1}}, function(err, data, path){
+post("/api/track", {"API_KEY":"test", "data":{"level": 1}}, function(err, data, path){
 	if(data.success == false)
 		success(path);
 	else
