@@ -1,5 +1,7 @@
 <%= include part_head %>
-	<% tags.forEach(function(tag) { %>
+<div class="container" >
+	<% for(var prop in tags) { %>
 		<%include part_tag %>
-	<% }); %>
+	<% } %>
+</div>
 <%= include part_foot %>

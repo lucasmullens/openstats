@@ -16,7 +16,8 @@ exports.track = function(req, res) {
 	else if (!apiKeyValid(API_KEY))
 		res.send(200,{"success":false});
 	else {
-		db.data.save({"API_KEY": API_KEY, "tag": tag, "data": data});
+		var time = new Date().getTime();
+		db.data.save({"API_KEY": API_KEY, "tag": tag, "data": data, 'created_at':time});
     	res.send(200,{"success":true});
 	}
 };
