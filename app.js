@@ -71,7 +71,7 @@ if ('development' == app.get('env')) {
 app.get('/', routes.index);
 app.get('/docs', routes.docs);
 app.get('/get', routes.get);
-app.get('/tracks', routes.tracks);
+app.get('/tags', routes.tags);
 app.get('/settings', routes.settings);
 
 
