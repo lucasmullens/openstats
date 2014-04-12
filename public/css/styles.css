@@ -97,6 +97,9 @@ h1{
 	top:0;
 	bottom:20%;
 }
+.scrollok{
+	overflow-y:scroll;
+}
 #chart-x{
 	border-top:1px solid #000;
 	position: absolute;

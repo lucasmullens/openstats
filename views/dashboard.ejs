@@ -15,7 +15,7 @@ function cap(string)
     {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
-    google.load("visualization", "1", {packages:["corechart"]});
+    google.load("visualization", "1", {packages:["corechart",'table']});
 	var data = <%- JSON.stringify(data) %>;
     var bargraph = function(key) {
      	var rows = [];
@@ -130,6 +130,28 @@ function cap(string)
        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
        chart.draw(stuff, options);
      }
+
+     var table = function(){
+     	var stuff = [];
+     	var first = true;
+     	$.each(data,function(i,e){
+     		var f = JSON.parse(e.data);
+     		if (first){
+     			first = false;
+     			stuff.push(Object.keys(f));
+     		}
+     		var keys = Object.keys(f);
+     		arr = [];
+     		for (var i = 0; i < keys.length; i++) {
+     		    arr.push(f[keys[i]]);
+     		}
+     		stuff.push(arr);
+     	});
+		stuff = google.visualization.arrayToDataTable(stuff);
+     	var chart = new google.visualization.Table(document.getElementById('chart_div'));
+     	console.log(stuff);
+     	chart.draw(stuff, null);
+     }
     </script>
     <div id="chart-wrap">
 	    <div id="chart-y"></div>
@@ -153,6 +175,9 @@ function cap(string)
 	  <div class="btn-group">
 	    <button type="button" class="chart-type btn btn-default" data-x="1" data-y="1" data-func="scatterplot">Scatter Plot</button>
 	  </div>
+	  <div class="btn-group">
+	    <button type="button" class="chart-type btn btn-default" id="tabler" data-func="table">Table</button>
+	  </div>
 	</div>
     <h3><%= cap(tag) %> Data</h1>
     <p>
@@ -173,6 +198,8 @@ function cap(string)
     		$(this).find('.draggable').addClass("selected");
     	});
     	$(".chart-type").click(function(){
+    		$("#chart_div").html("Drag in data fields into the axes.");
+    		$("#chart_div").removeClass("scrollok");
     		charttype = $(this).data('func');
     		$(".chart-type").removeClass("active");
     		$(this).addClass("active");
@@ -199,6 +226,10 @@ function cap(string)
 	    			}
 	    		}
 	    	});
+	    	if (charttype=="table"){
+    			$("#chart_div").addClass("scrollok");
+	    		chartify();
+	    	}
     	});
     });
     var chartify = function(){
@@ -212,6 +243,8 @@ function cap(string)
     		bargraph($("#chart-y .dropzone").data("key"));
     	} else if (charttype=="scatterplot"){
     		scatterplot($("#chart-x .dropzone").data("key"),$("#chart-y .dropzone").data("key"));
+    	} else if (charttype=="table"){
+    		table();
     	} 
     }
     </script>
