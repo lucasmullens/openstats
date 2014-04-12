@@ -55,7 +55,7 @@ app.set('mergeUser', mergeUser);
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-app.use(express.favicon());
+app.use(express.favicon("public/img/favicon.png"));
 app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
@@ -71,6 +71,8 @@ if ('development' == app.get('env')) {
 app.get('/', routes.index);
 app.get('/docs', routes.docs);
 app.get('/get', routes.get);
+app.get('/tracks', routes.tracks);
+app.get('/settings', routes.settings);
 
 
 app.get('/api', api.index);
@@ -84,3 +86,6 @@ app.get("/auth", user.page_auth);
 app.get("/activate", user.page_activate);
 app.post("/create", user.service_create);
 app.post("/login", user.service_login);
+app.post("/update", user.service_update);
+app.post("/recycle", user.service_recycle);
+app.get("/logout", user.service_logout);

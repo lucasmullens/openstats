@@ -34,18 +34,18 @@
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 						<% if (typeof user == 'object' && user) { %>
-							<li class="<%= (nav=='tracks')? 'active':'' %>"><a href="/tracks">Tracks</a></li>
-							<li class="dropdown <%= (nav=='signin')? 'active':'' %>">
+							<li class="<%= (nav=='Tracks')? 'active':'' %>"><a href="/tracks">Tracks</a></li>
+							<li class="dropdown user<%= (nav=='Authentication')? 'active':'' %>">
 								<a class="dropdown-toggle" href="#" data-toggle="dropdown"><%= user.user_name %> <strong class="caret"></strong></a>
 								<div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
-									<div><a href="/player/<%= user.user_id %>/settings">Settings</a></div>
+									<div><a href="/settings">Settings</a></div>
 									<div class="divider"></div>
 									<div><a href="/logout">Log Out</a></div>
 				  					<div class="divider"></div>
 								</div>
 							</li>
 						<% }else{ %>
-							<li class="dropdown <%= (nav=='Authentication')? 'active':'' %>" >
+							<li class="dropdown auth<%= (nav=='Authentication')? 'active':'' %>" >
 								<a class="dropdown-toggle" href="#" data-toggle="dropdown">Sign In <strong class="caret"></strong></a>
 								<div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
 								  	<form action="/login" method="post">
