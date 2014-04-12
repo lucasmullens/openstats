@@ -5,7 +5,8 @@
 exports.index = function(req, res) {
     res.send(200, {"Wat?":"Hey you, yeah, you, this route makes no sense. Go to http://openTrack.in/docs to learn more!"});
 };
-exports.track = function(req, res) {	
+exports.track = function(req, res) {
+	
 	var db = req.app.get('db');
 	var tag = req.body.tag;
 	var API_KEY = req.body.API_KEY;

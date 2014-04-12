@@ -5,6 +5,7 @@
 var express = require('express');
 var routes = require('./routes');
 var api = require('./routes/api');
+var dashboard = require('./routes/dashboard');
 var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
@@ -67,8 +68,22 @@ app.use(express.static(path.join(__dirname, 'public')));
 if ('development' == app.get('env')) {
     app.use(express.errorHandler());
 }
-
+app.all('*', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+ });
 app.get('/', routes.index);
+app.get('/dashboard/:tag', function(req,res){
+	var db = req.app.get('db');
+	var key = "test";
+	var tag = req.params.tag;
+	db.data.find({"API_KEY":key, "tag":tag}).toArray( function(err,result){
+		var data = JSON.parse(result[0].data);
+		var keys = (Object.keys(data));
+	  	res.render('dashboard', { "tag": tag, "keys": keys, "data": result, "nav": "" });
+	});
+});
 app.get('/docs', routes.docs);
 app.get('/get', routes.get);
 app.get('/tags', routes.tags);
@@ -83,6 +98,7 @@ http.createServer(app).listen(app.get('port'), function() {
 });
 
 app.get("/auth", user.page_auth);
+app.post("/create", user.service_create);
 app.get("/activate", user.page_activate);
 app.post("/create", user.service_create);
 app.post("/login", user.service_login);

@@ -73,6 +73,66 @@ h1{
 .alert-dismissable{
 
 }
+#chart-wrap{
+	border:1px solid #000;
+	text-align: center;
+	width:80%;
+	float: right;
+	height:500px;
+	position: relative;
+	margin-right:10px;
+}
+#chart-y{
+	border-right:1px solid #000;
+	position: absolute;
+	right:80%;
+	left:0;
+	top:0;
+	bottom:20%;
+}
+#chart_div{
+	position: absolute;
+	right:0;
+	left:20%;
+	top:0;
+	bottom:20%;
+}
+#chart-x{
+	border-top:1px solid #000;
+	position: absolute;
+	right:0;
+	left:20%;
+	top:80%;
+	bottom:0;
+}
+.draggy{
+	text-align: center;
+	width:150px;
+	height:2.2em;
+	padding:5px;
+	margin:5px;
+	border-radius: 3px;
+}
+.dropzone{
+	border:1px dashed black;
+	background-color: transparent;
+	margin:auto;
+	margin-top:4px;
+}
+.filled{
+	background-color: #333;
+	color:#FFF;
+	border:1px solid black;
+}
+.draggable{
+	background-color: #333;
+	color:#FFF;
+	border:1px solid black;
+}
+.selected{
+	color:#000;
+	background-color: yellow;
+}
 .dropdown-menu{
 	min-width: 200px;
 }
