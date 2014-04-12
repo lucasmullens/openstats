@@ -1,0 +1,38 @@
+<%= include part_head %>
+	<style type="text/css">
+	.base{
+		background: white;
+		padding: 20px;
+	}
+	.settings-section{
+		border-bottom: 1px solid #dddddd;
+	}
+	.form-control{
+		/*width: 204px*/
+	}
+	</style>
+	<div class="content">
+		<div class="col-md-12 base">
+			<form method="POST" action="/update" class="col-sm-8 col-xs-12">
+				<h2 class="settings-section">Basic Info</h2>
+				<input name="user_name" type="text" class="form-control" value="<%= user.user_name %>">
+				<input name="email" type="text" class="form-control" value="<%= user.email %>">
+				<h2 class="settings-section">Password Reset</h2>
+				<input name="new_password" type="password" class="form-control" placeholder="New Password">
+				<input name="new_confirm" type="password" class="form-control" placeholder="New Password Again">
+				<div class="form-inline pull-right" style="position:relative;right:-4px;">
+					<input name="password" type="password" class="form-control" placeholder="Old Password">
+					<input type="submit" class="btn btn-primary" style="position:relative;top:-3px;left:-4px;" value="Save">
+				</div>
+				<div class="clearfix"  style="border-bottom:2px solid #cccccc;"></div>
+			</form>
+			<form method="POST" action="/recycle" class="col-sm-8 col-xs-12">
+				<h2 class="settings-section">API key</h2>
+				<input disabled="disabled" class="form-control" value="<%= user.API_KEY %>">
+				<input type="submit" class="btn btn-primary pull-right" value="Recycle">
+			</form>
+			<div class="clearfix" ></div>
+		</div>
+			<div class="clearfix" ></div>
+	</div>
+<%= include part_foot %>

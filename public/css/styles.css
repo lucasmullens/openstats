@@ -133,3 +133,6 @@ h1{
 	color:#000;
 	background-color: yellow;
 }
+.dropdown-menu{
+	min-width: 200px;
+}
