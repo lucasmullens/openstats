@@ -7,11 +7,14 @@ var routes = require('./routes');
 var api = require('./routes/api');
 var http = require('http');
 var path = require('path');
-
+var databaseUrl = "database";
+var collections = ["users", "data"];
+var db = require("mongojs").connect(databaseUrl, collections);
 var app = express();
 app.use(express.bodyParser());
 
 // all environments
+app.set('db', db); 
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
