@@ -213,6 +213,7 @@ function cap(string)
 		// });
 		$(".chart-type").click(function(){
 			charttype = $(this).data('func');
+    		$("#chart_div").removeClass("scrollok");
 			$(".chart-type").removeClass("active");
 			$(this).addClass("active");
 			var dropzone = "<div class='dropzone draggy'>Drag Stat Here</div>";
