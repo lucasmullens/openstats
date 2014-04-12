@@ -195,22 +195,20 @@ function cap(string)
 	.dragee{
 		position: fixed;
 	}
+	*{
+		-khtml-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+	}
 	</style>
 	<script type="text/javascript">
 	jQuery.fn.toHtmlString = function () {
 		return $('<div></div>').html($(this).clone()).html();
 	};
-	// var moving = false;
-	// var chosen;
 	$(document).ready(function(){
-		// $(".key").click(function(){
-		// 	chosen = $(this);
-	 //		moving = true;
-	 //		var draggingPill = $($(this).html());
-	 //		draggingPill.addClass("undermouse");
-	 //		$("html").append(draggingPill);
-	 //		$(this).find('.draggable').addClass("selected");
-		// });
 		$(".chart-type").click(function(){
 			charttype = $(this).data('func');
     		$("#chart_div").removeClass("scrollok");
@@ -234,15 +232,15 @@ function cap(string)
 		});
 		var holding = false;
 		var draggee;
-		$(".key").mousedown(function(){
+		$(".key").mousedown(function(e){
 			holding = true;
-			// $('<div>').append($('#item-of-interest').clone()).html();
-			// draggee = $($(this).html());
-			// draggee = $('<div>').append($(this).clone()).html();
 			draggee = $($(this).toHtmlString());
 			draggee.addClass("dragee");
 			$("html").append(draggee);
-			console.log("start");
+			draggee.css({
+				"top":e.pageY - draggee.height()/2.0,
+				"left":e.pageX - draggee.width()/2.0
+			});
 		});
 		$(window).mousemove(function(e){
 			if(holding){
@@ -257,19 +255,13 @@ function cap(string)
 			if(holding){
 				holding = false;
 				var dropzones = $(".dropzone");
-				console.log(dropzones);
 				for (var i = 0; i < dropzones.length; i++) {
-					console.log(draggee.offset().left +" "+ $(dropzones[i]).offset().left);
 					var dx = Math.abs(draggee.offset().left - $(dropzones[i]).offset().left);
 					var dy = Math.abs(draggee.offset().top - $(dropzones[i]).offset().top);
 					if(dx < 100 && dy < 100){
 						$(dropzones[i]).html(cap(draggee.data("key")));
 						$(dropzones[i]).data("key",draggee.data("key"));
 						$(dropzones[i]).addClass("filled");
-						// $('.draggable').removeClass("selected");
-						
-						console.log($(".filled").size());
-						console.log($(".dropzone").size());
 						if ($(".filled").size() == $(".dropzone").size()){
 							chartify();
 						}
