@@ -9,7 +9,6 @@ function cap(string)
 <style type="text/css">
 	
 </style>
-    <!--Load the AJAX API-->
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript">
     function cap(string)
@@ -18,10 +17,10 @@ function cap(string)
     }
     google.load("visualization", "1", {packages:["corechart"]});
          // google.setOnLoadCallback();
-         function histogram(key) {
+         var histogram = function(key) {
          	var data = <%- JSON.stringify(data) %>;
          	var array = new Array();
-         	array.push([key]);
+         	array.push([cap(key)]);
          	$.each(data,function(i,e){
          		var f = JSON.parse(e.data);
          		array.push([f[key]]);
@@ -36,23 +35,113 @@ function cap(string)
            var chart = new google.visualization.Histogram(document.getElementById('chart_div'));
            chart.draw(stuff, options);
          }
+
+
+
+
+
+
+         var piechart = function(key) {
+        	var stuff = new google.visualization.DataTable();
+         	var data = <%- JSON.stringify(data) %>;
+     		stuff.addColumn("string", key.toString());
+     		stuff.addColumn("number", "Count");
+     		var rows = [];
+         	$.each(data,function(i,e){
+         		var f = JSON.parse(e.data);
+         		var k = f[key].toString();
+         		var found = false;
+         		for (var i = 0; i < rows.length; i++) {
+         			if (rows[i][0] == k){
+         				rows[i][1]++;
+         				found = true;
+         			}
+         		};
+         		if (!found){
+         			rows.push([k,1]);         			
+         		}
+         	});
+     		console.log(rows);
+     		stuff.addRows(rows);
+
+           var options = {
+             title: cap(key)
+           };
+
+           var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+           chart.draw(stuff, options);
+         }
     </script>
-    <h1><%= cap(tag) %></h1>
+    <div id="chart-wrap">
+	    <div id="chart-y">Y-Axis</div>
+	    <div id="chart_div">Select a chart type on the left.</div>
+	    <div id="chart-x">X-Axis</div>
+    </div>
+    <h3>Chart Type</h1>
+	<div class="chart-types btn-group btn-group-vertical">
+	  <div class="btn-group">
+	    <button type="button" class="chart-type btn btn-default" data-x="1" data-func="histogram">Histogram</button>
+	  </div>
+	  <div class="btn-group">
+	    <button type="button" class="chart-type btn btn-default" data-x="1" data-func="piechart">Pie Chart</button>
+	  </div>
+	  <div class="btn-group">
+	    <button type="button" class="chart-type btn btn-default" data-x="1" data-y="1" data-func="bargraph">Bar Graph</button>
+	  </div>
+	</div>
+    <h3><%= cap(tag) %> Data</h1>
     <p>
     <% 
     var i = 0;
     keys.forEach(function(key){ 
     i++;
     %>
-    <span class="key" id="key<%= i %>" data-key="<%= escape(key) %>"><%= cap(key) %></span>
+    <div class="key" data-key="<%= escape(key) %>">
+    <div class="draggable draggy"  draggable="true" id="key<%= i %>"  data-key="<%= escape(key) %>"><%= cap(key) %></div>
+    </div>
     <%	}); %>
     </p>
     <script type="text/javascript">
     $(function(){
     	$(".key").click(function(){
-    		histogram($(this).data("key"));
+    		chosen = $(this);
+    		$(this).find('.draggable').addClass("selected");
+    	});
+    	$(".chart-type").click(function(){
+    		charttype = $(this).data('func');
+    		$(".chart-type").removeClass("active");
+    		$(this).addClass("active");
+    		var dropzone = "<div class='dropzone draggy'>Drag Stat Here</div>";
+    		var x = $(this).data('x');
+    		var y = $(this).data('y');
+    		$("#chart-x").html("");
+    		$("#chart-y").html("");
+    		if (x){
+    			$("#chart-x").append(dropzone);
+    		}
+    		if (y){
+    			$("#chart-y").append(dropzone);
+    		}
+	    	$(".dropzone").click(function(){
+	    		if (chosen){
+	    			$(this).html(cap(chosen.data("key")));
+	    			$(this).data("key",chosen.data("key"));
+	    			$(this).addClass("filled");
+	    			chosen = null;
+	    			$('.draggable').removeClass("selected");
+	    			if ($(".filled").size() == $(".dropzone").size()){
+	    				chartify();
+	    			}
+	    		}
+	    	});
     	});
     });
+    var chartify = function(){
+    	if (charttype=="histogram"){
+    		histogram($("#chart-x .dropzone").data("key"));
+    	} else if (charttype=="piechart"){
+    		piechart($("#chart-x .dropzone").data("key"));
+    	} 
+    }
     </script>
-    <div id="chart_div"></div>
 <%= include part_foot %>

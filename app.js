@@ -74,7 +74,16 @@ app.all('*', function(req, res, next) {
   next();
  });
 app.get('/', routes.index);
-app.get('/dashboard', dashboard.index);
+app.get('/dashboard/:tag', function(req,res){
+	var db = req.app.get('db');
+	var key = "test";
+	var tag = req.params.tag;
+	db.data.find({"API_KEY":key, "tag":tag}).toArray( function(err,result){
+		var data = JSON.parse(result[0].data);
+		var keys = (Object.keys(data));
+	  	res.render('dashboard', { "tag": tag, "keys": keys, "data": result, "nav": "" });
+	});
+});
 app.get('/docs', routes.docs);
 app.get('/get', routes.get);
 
