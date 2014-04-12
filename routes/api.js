@@ -5,7 +5,8 @@
 exports.index = function(req, res) {
     res.render('api', {});
 };
-exports.track = function(req, res) {	
+exports.track = function(req, res) {
+	
 	var db = req.app.get('db');
 	var tag = req.body.tag;
 	var API_KEY = req.body.API_KEY;
@@ -21,4 +22,4 @@ exports.track = function(req, res) {
 };
 var apiKeyValid = function(key){
 	return true;
-}
+};
