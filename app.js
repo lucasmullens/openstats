@@ -5,6 +5,7 @@
 var express = require('express');
 var routes = require('./routes');
 var api = require('./routes/api');
+var dashboard = require('./routes/dashboard');
 var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
@@ -39,6 +40,7 @@ app.all('*', function(req, res, next) {
   next();
  });
 app.get('/', routes.index);
+app.get('/dashboard', dashboard.index);
 app.get('/api', api.index);
 app.post('/api/track', api.track);
 

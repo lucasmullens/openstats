@@ -1,0 +1,58 @@
+<%
+function cap(string)
+{
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+%>
+<%= include part_head %>
+
+<style type="text/css">
+	
+</style>
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+    function cap(string)
+    {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+    google.load("visualization", "1", {packages:["corechart"]});
+         // google.setOnLoadCallback();
+         function histogram(key) {
+         	var data = <%- JSON.stringify(data) %>;
+         	var array = new Array();
+         	array.push([key]);
+         	$.each(data,function(i,e){
+         		var f = JSON.parse(e.data);
+         		array.push([f[key]]);
+         	});
+           var stuff = google.visualization.arrayToDataTable(array);
+
+           var options = {
+             title: cap(key),
+             legend: { position: 'none' },
+           };
+
+           var chart = new google.visualization.Histogram(document.getElementById('chart_div'));
+           chart.draw(stuff, options);
+         }
+    </script>
+    <h1><%= cap(tag) %></h1>
+    <p>
+    <% 
+    var i = 0;
+    keys.forEach(function(key){ 
+    i++;
+    %>
+    <span class="key" id="key<%= i %>" data-key="<%= escape(key) %>"><%= cap(key) %></span>
+    <%	}); %>
+    </p>
+    <script type="text/javascript">
+    $(function(){
+    	$(".key").click(function(){
+    		histogram($(this).data("key"));
+    	});
+    });
+    </script>
+    <div id="chart_div"></div>
+<%= include part_foot %>
