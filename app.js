@@ -9,6 +9,7 @@ var http = require('http');
 var path = require('path');
 
 var app = express();
+var expressValidator = require('express-validator');
 
 // all environments
 app.set('port', process.env.PORT || 3000);
