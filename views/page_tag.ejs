@@ -68,7 +68,7 @@ function cap(string)
        var options = {
          title: cap(key),
          legend: { position: 'none' },
-         backgroundColor: '#EEEEEE'
+         backgroundColor: '#FFFFFF'
        };
        var stuff = [[cap(key), "Count"]];
        stuff = stuff.concat(rows);
@@ -108,6 +108,7 @@ function cap(string)
        var options = {
          title: cap(key),
          legend: { position: 'none' },
+         backgroundColor: '#FFFFFF'
        };
 
        var chart = new google.visualization.Histogram(document.getElementById('chart_div'));
@@ -125,6 +126,7 @@ function cap(string)
        var options = {
          title: cap(y) + " vs " + cap(x),
          legend: { position: 'none' },
+         backgroundColor: '#FFFFFF'
        };
 
        var chart = new google.visualization.ScatterChart(document.getElementById('chart_div'));
@@ -154,7 +156,8 @@ function cap(string)
  		stuff.addRows(rows);
 
        var options = {
-         title: cap(key)
+         title: cap(key),
+         backgroundColor: '#FFFFFF'
        };
 
        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
@@ -200,7 +203,7 @@ function cap(string)
 	</div>
 	<div id="chart-wrap">
 	    <div id="chart-y"></div>
-	    <div id="chart_div">Select a chart type on the left, then fill in the X and Y axes.</div>
+	    <div id="chart_div" class="base">Select a chart type on the left, then fill in the X and Y axes.</div>
 	    <div id="chart-x"></div>
 	</div>
 	<div id="left-col">

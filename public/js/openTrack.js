@@ -1,4 +1,4 @@
-var OT = {domain:"http://localhost:3000/api/track"};
+var OT = {domain:"http://opentrackr.com/api/track"};
 OT.log = function(tag, data, API_KEY, callback){
 	var xmlhttp;
 	if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
