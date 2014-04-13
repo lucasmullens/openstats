@@ -13,7 +13,7 @@ exports.docs = function(req, res){
 };
 
 exports.get = function(req, res){
-  res.render('page_index', res.app.get("mergeUser")(req.signedCookies.user, { nav: 'Get' }));
+  res.render('page_get', res.app.get("mergeUser")(req.signedCookies.user, { nav: 'Get' }));
 };
 
 exports.tags = function(req, res){
@@ -44,13 +44,10 @@ exports.tags = function(req, res){
 			tags[prop].newest = monthNames[newest.getMonth()] +" "+ newest.getDate() +", "+ newest.getFullYear() +" at "+ (newest.getHours()>12?newest.getHours()-12:newest.getHours()) +":"+(newest.getMinutes()<10?'0':'')+newest.getMinutes() +(newest.getHours()>12?'pm':'am');
 			tags[prop].oldest = monthNames[oldest.getMonth()] +" "+ oldest.getDate() +", "+ oldest.getFullYear() +" at "+ (oldest.getHours()>12?oldest.getHours()-12:oldest.getHours()) +":"+(oldest.getMinutes()<10?'0':'')+oldest.getMinutes() +(oldest.getHours()>12?'pm':'am');
 		}
-
-		// data.forEach(function(chunk){
-		// 	if(tags[chunk.tag] == undefined)
-		// 		tags[chunk.tag] = new Array;
-		// });
-		// console.log(tags);
-		res.render('page_tags', res.app.get("mergeUser")(req.signedCookies.user, { nav: 'Tags', "tags":tags }));
+		if(tags.length == 0)
+			res.render('page_tags', res.app.get("mergeUser")(req.signedCookies.user, { nav: 'Tags', "tags":tags, alert:"You have no Tags yet! <a href='/get'>Getting Started</a>" }));
+		else
+			res.render('page_tags', res.app.get("mergeUser")(req.signedCookies.user, { nav: 'Tags', "tags":tags }));
 	});
 };
 

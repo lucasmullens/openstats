@@ -79,7 +79,7 @@ app.get('/tags/:tag', function(req,res){
 	db.data.find({"API_KEY":key, "tag":tag}).toArray( function(err,result){
 		var data = JSON.parse(result[0].data);
 		var keys = (Object.keys(data));
-	  	res.render('page_tag', { "tag": tag, "keys": keys, "data": result, "nav": "" });
+	  	res.render('page_tag', mergeUser(req.signedCookies.user, { "tag": tag, "keys": keys, "data": result, "nav": "" }));
 	});
  });
 app.get('/permitags', routes.permitags);
@@ -94,7 +94,7 @@ app.get('/permitags/:tag', function(req,res){
 		if(req.query.m!=undefined)
 			res.render('page_permitag', { "tag": tag, "keys": keys, "data": result, "nav": "", alert:req.query.m });
 		else
-	  		res.render('page_permitag', { "tag": tag, "keys": keys, "data": result, "nav": "" });
+	  		res.render('page_permitag', mergeUser(req.signedCookies.user, { "tag": tag, "keys": keys, "data": result, "nav": "" }));
 	});
  });
 app.get('/docs', routes.docs);

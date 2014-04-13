@@ -1,3 +1,67 @@
 <%= include part_head %>
-
+<style type="text/css">
+	.box-1, .box-2{
+		padding: 10px;
+	}
+	a:hover{
+		text-decoration: none;
+		color: white; 
+	}
+	.box-1 div{
+		font: bold 52px Helvetica, Arial, Sans-Serif;
+		box-shadow: 1px 1px #fe4902, 
+					2px 2px #fe4902, 
+					3px 3px #fe4902;
+	}
+	.box-1 div:hover{
+		position: relative; 
+		top: -3px; 
+		left: -3px; 
+		box-shadow: 1px 1px #fe4902, 
+		            2px 2px #fe4902, 
+		            3px 3px #fe4902, 
+		            4px 4px #fe4902, 
+		            5px 5px #fe4902, 
+		            6px 6px #fe4902;
+	}
+	.box-2 div{
+		font: bold 52px Helvetica, Arial, Sans-Serif;
+		box-shadow: -1px 1px #fe4902, 
+					-2px 2px #fe4902, 
+					-3px 3px #fe4902;
+	}
+	.box-2 div:hover{
+		position: relative; 
+		top: -3px; 
+		left: 3px; 
+		box-shadow: -1px 1px #fe4902, 
+		            -2px 2px #fe4902, 
+		            -3px 3px #fe4902, 
+		            -4px 4px #fe4902, 
+		            -5px 5px #fe4902, 
+		            -6px 6px #fe4902;
+	}
+</style>
+	<div class="content">
+		<div class="col-md-12">
+			<img src="/img/ot.png" style="float:left;">
+			<h1 style="float:left;font-size:4.5em;line-height:5em;">Open Trackr</h1>
+		</div>
+		<div class="col-md-6 box-1">
+			<a href="/js/openTrack.js"><div class="base">
+				<h1>Client JS</h1>
+			</div></a>
+		</div>
+		<div class="col-md-6 box-2">
+			<a href="/docs"><div class="base">
+				<h1>Documentation</h1>
+			</div></a>
+		</div>
+		<div class="col-md-6 box-1">
+			<a href="get"><div class="base"><h1>Getting Started</h1></div></a>
+		</div>
+		<div class="col-md-6 box-2">
+			<a href="https://github.com/lucasmullens/opentrack"><div class="base"><h1>Github</h1></div></a>
+		</div>
+	</div>
 <%= include part_foot %>
