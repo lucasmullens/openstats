@@ -1,4 +1,3 @@
-
 exports.page_auth = function(req, res){
 	res.render("page_auth", {alert:req.query.m, nav:"Authentication"});
 }
@@ -28,7 +27,8 @@ exports.service_create = function(req, res){
 			if(err){error(res, "There was an error. Please try again."); return;}
 			res.app.get('db').users.save({email:req.body.email, user_name:req.body.user_name, API_KEY:GUID, password:hash}, function(err){
 				if(err){error(res, "There was an error. Please try again."); return;}
-				res.redirect("/activate");
+				res.cookie('user', JSON.stringify(user[0]), {signed: true});
+				res.redirect("/");
 			});
 		});
 	});
