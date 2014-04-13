@@ -74,7 +74,7 @@ h1{
 
 }
 #chart-wrap{
-	border:1px solid #000;
+	border:0px solid #000;
 	text-align: center;
 	width:80%;
 	float: right;
@@ -83,7 +83,8 @@ h1{
 	margin-right:10px;
 }
 #chart-y{
-	border-right:1px solid #000;
+	margin-top:150px;
+	border-right:0px solid #000;
 	position: absolute;
 	right:80%;
 	left:0;
@@ -101,7 +102,7 @@ h1{
 	overflow-y:scroll;
 }
 #chart-x{
-	border-top:1px solid #000;
+	border-top:0px solid #000;
 	position: absolute;
 	right:0;
 	left:20%;
@@ -181,4 +182,7 @@ h1{
 }
 .update-filter{
 	margin-bottom: 1em;
+}
+#left-col{
+	margin-left:20px;
 }

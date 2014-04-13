@@ -67,7 +67,8 @@ function cap(string)
 
        var options = {
          title: cap(key),
-         legend: { position: 'none' }
+         legend: { position: 'none' },
+         backgroundColor: '#EEEEEE'
        };
        var stuff = [[cap(key), "Count"]];
        stuff = stuff.concat(rows);
@@ -202,6 +203,7 @@ function cap(string)
 	    <div id="chart_div">Select a chart type on the left, then fill in the X and Y axes.</div>
 	    <div id="chart-x"></div>
 	</div>
+	<div id="left-col">
 	<h3>Chart Type</h1>
 	<div class="chart-types btn-group btn-group-vertical">
 	  <div class="btn-group">
@@ -235,6 +237,7 @@ function cap(string)
 	</div>
 	<%	}); %>
 	</p>
+	</div>
 	<style type="text/css">
 	.dragee{
 		position: fixed;
@@ -310,15 +313,13 @@ function cap(string)
 					if(dx < 100 && dy < 30){
 						$(dropzones[i]).html(cap(draggee.data("key")));
 						$(dropzones[i]).data("key",draggee.data("key"));
-						if (timeToChart()){
-							chartify();
-						}
 						if (!$(dropzones[i]).hasClass("nonfilter") && !$(dropzones[i]).hasClass("filled")) {
 							$("#filter-wrap").append($($template).clone());
 							fixClose();
 						}
 						$(dropzones[i]).addClass("filled");
 						draggee.remove();
+						chartify();	
 					}
 				};
 			}
