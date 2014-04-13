@@ -1,0 +1,61 @@
+<%= include part_head %>
+<script type="text/javascript" src="/js/openTrack.js"></script>
+<script type="text/javascript" src="/js/jquery.bootstrap.wizard.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#rootwizard').bootstrapWizard({'tabClass': 'nav nav-pills'});
+	});
+	function red(){
+		OT.log("Matrix-Choice", {choice:"red"}, "test");
+	}
+	function blue(){
+		OT.log("Matrix-Choice", {choice:"blue"}, "test", function(status){
+			alert(status);
+		});
+	}
+</script>
+
+<div class="content">
+	<div class="base">
+		<h1>Open Trackr</h1>
+		<h2>What is open trackr?</h2>
+		<p>Open trackr is light-wieght and open source software to allow developers to log ANYTHING. Built with the versitility of mongoDB and the power of Node.js, Open Trackr is your solution for abiguous data-harboring and analytics.</p>
+		<h2>Stop waisting my time, show me what you are talking about.</h2>
+		<p>So. The red pill or the blue pill?</p>
+		<style type="text/css">
+			.nav-pills > li > a {
+			  border-radius: 4px;
+			  color: #fff;
+			  background: #428bca
+			}
+		</style>
+		<div id="rootwizard">
+			<ul>
+			  	<li style="display:none;"><a href="#tab1" data-toggle="tab">First</a></li>
+				<li><a href="#tab2" data-toggle="tab" onclick="red()" style="background:#fa2942;">Red</a></li>
+				<li><a href="#tab3" data-toggle="tab" onclick="blue()" style="background:#428bca;">Blue</a></li>
+			</ul>
+			<div class="tab-content">
+			    <div class="tab-pane" id="tab1" style="display:none;"></div>
+			    <div class="tab-pane" id="tab2">
+			    	This code is executed to log a red pill choice. 
+			    	<pre>OT.log("Matrix-Choice", {choice:red}, "test");</pre>
+			    </div>
+				<div class="tab-pane" id="tab3">
+					This code is executed to log a blue pill choice.
+			    	<pre>OT.log("Matrix-Choice", {choice:blue}, "test", function(status){
+	alert(status);
+});</pre>
+			    </div>
+			</div>	
+		</div>	
+		<p>HueHueHue</p>
+		<h2>Ok... So what did that do?</h2>
+		<p>This just sent log data about the choice you made (Red Pill vs Blue Pill) to the remote server (openTrackr.com). Wow! That was easy... and pointless. But imagine if that data had been useful to you. For example, if you wanted to track data on how often a user clicked on a suggested item while browsing a different Item in your store.</p>
+		<h2>So Yey! Data was pushed to some remote server, How do I access it?</h2>
+		<p><a href="/permitags/Matrix-Choice?m=Choose 'Pie Chart' and drag 'Choice' to the data field" target="_blank">Check this out</a> and follow the instructions.<br><br>Every data collection is organised by a tag, you can see more examples <a href="/permitags">here</a>. Other than that there is just your data. We don't know and frankly don't care what your data is. All we can do is supply the tools, you have to reason the data yourself.</p>
+		<h2>Yea? I see the game you're playing, Why would I give YOU my data?</h2>
+		<p>The remote hosting is offered only as a free service but this entire package is offered for download as well. (recall: <strong>open</strong>Trace)</p>
+	</div>
+</div>
+<%= include part_foot %>

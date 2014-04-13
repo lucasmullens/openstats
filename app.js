@@ -1,7 +1,3 @@
-/**
- * Module dependencies.
- */
-
 var express = require('express');
 var routes = require('./routes');
 var api = require('./routes/api');
@@ -67,7 +63,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // development only
 if ('development' == app.get('env')) {
     app.use(express.errorHandler());
-}
+ }
 app.all('*', function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "X-Requested-With");
@@ -75,15 +71,32 @@ app.all('*', function(req, res, next) {
  });
 app.get('/', routes.index);
 app.get('/tags/:tag', function(req,res){
+	if(req.signedCookies.user == undefined)
+		{res.redirect("/auth?m=You need to sign in to view tags."); return;}
 	var db = req.app.get('db');
-	var key = "test";
+	var key = JSON.parse(req.signedCookies.user).API_KEY;
 	var tag = req.params.tag;
 	db.data.find({"API_KEY":key, "tag":tag}).toArray( function(err,result){
 		var data = JSON.parse(result[0].data);
 		var keys = (Object.keys(data));
 	  	res.render('page_tag', { "tag": tag, "keys": keys, "data": result, "nav": "" });
 	});
-});
+ });
+app.get('/permitags', routes.permitags);
+app.get('/permitags/:tag', function(req,res){
+	var db = req.app.get('db');
+	var key = "test";
+	var tag = req.params.tag;
+	db.data.find({"API_KEY":key, "tag":tag}).toArray( function(err,result){
+		console.log(err);
+		var data = JSON.parse(result[0].data);
+		var keys = (Object.keys(data));
+		if(req.query.m!=undefined)
+			res.render('page_permitag', { "tag": tag, "keys": keys, "data": result, "nav": "", alert:req.query.m });
+		else
+	  		res.render('page_permitag', { "tag": tag, "keys": keys, "data": result, "nav": "" });
+	});
+ });
 app.get('/docs', routes.docs);
 app.get('/get', routes.get);
 app.get('/tags', routes.tags);

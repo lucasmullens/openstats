@@ -1,6 +1,6 @@
 
 exports.page_auth = function(req, res){
-	res.render("auth", {alert:req.query.m, nav:"Authentication"});
+	res.render("page_auth", {alert:req.query.m, nav:"Authentication"});
 }
 exports.page_activate = function(req, res){
 	res.render("page_index", {nav:"Authentication", alert:"<strong>Great!</strong> Now please verify your email addres!"});
@@ -120,16 +120,27 @@ exports.service_update = function(req, res){
 }
 
 exports.service_recycle = function(req, res){
+
 	var GUID = guid();
 	var user = JSON.parse(req.signedCookies.user);
-	res.app.get('db').users.update({API_KEY:user.API_KEY}, {$set: {API_KEY: GUID}}, function(err, updated){
+	var oldKEY = user.API_KEY;
+	lock = 0;
+	res.app.get('db').users.update({API_KEY:oldKEY}, {$set: {API_KEY: GUID}}, function(err, updated){
 		if(err || !updated){settings_error(res, "There was an error updating your account. Please try again."); return;}
 		res.clearCookie("user");
 		res.app.get('db').users.find({API_KEY:GUID}, function(err, users){
 			if(err || users.length != 1) {error(res, "There was an error updating your account. Please Sign in Manually."); return;}
 			res.cookie('user', JSON.stringify(users[0]), {signed: true});
-			res.redirect("/settings");
+			lock++;
+			if(lock>=2)
+				res.redirect("/settings");
 		});
+	});
+	res.app.get('db').data.update({API_KEY:oldKEY}, {$set: {API_KEY: GUID}}, function(err, updated){
+		if(err || !updated){settings_error(res, "There was an error updating your account. Please try again."); return;}
+		lock++;
+		if(lock>=2)
+			res.redirect("/settings");
 	});
 };
 var error = function(res, message){
