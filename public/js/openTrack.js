@@ -14,7 +14,7 @@ OT.log = function(tag, data, API_KEY, callback){
 	}
 
 	var params = "tag="+tag+"&data="+JSON.stringify(data)+"&API_KEY="+API_KEY;
-	xmlhttp.open("POST","http://localhost:3000/api/track",true);
+	xmlhttp.open("POST","http://opentrackr.com/api/track",true);
 	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xmlhttp.setRequestHeader('Access-Control-Allow-Origin', '*');
 	xmlhttp.send(params);
