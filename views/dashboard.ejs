@@ -1,7 +1,7 @@
 <%
 function cap(string)
 {
-	return string.charAt(0).toUpperCase() + string.slice(1);
+    return string.charAt(0).toUpperCase() + string.slice(1);
 }
 %>
 <%= include part_head %>
@@ -9,45 +9,14 @@ function cap(string)
 <style type="text/css">
 	
 </style>
-	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-	<script type="text/javascript">
-	var charttype = null;
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
     function cap(string)
     {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
     google.load("visualization", "1", {packages:["corechart",'table']});
-	var rawdata = <%- JSON.stringify(data) %>;
-	var filterdata = function(){
-		data = rawdata.slice(0);
-		$(".filter").each(function(){
-			try {
-				var a = $(this).find(".a").data("key");
-				var b = $(this).find(".b").val();
-				var c = $(this).find(".c").val();
-				if (a !== undefined){
-				if (c !== ""){
-				for (var i = 0; i < data.length; i++) {
-					var d = JSON.parse(data[i].data);
-					console.log(d["score"]);
-					var del = false;
-					if (b == "lt" && (d[a] >= c))
-						del = true;
-					if (b == "gt" && (d[a] <= c))
-						del = true;
-					if (b == "et" && (d[a] != c))
-						del = true;
-					if (del){
-						data.splice(i, 1);
-						i--;
-					}
-				}}}
-			} catch (err){
-				console.error(err);
-			}
-		});
-	}
-	var data = rawdata;
+	var data = <%- JSON.stringify(data) %>;
     var bargraph = function(key) {
      	var rows = [];
      	$.each(data,function(i,e){
@@ -71,6 +40,7 @@ function cap(string)
        };
        var stuff = [[cap(key), "Count"]];
        stuff = stuff.concat(rows);
+       console.log(stuff);
        stuff = google.visualization.arrayToDataTable(stuff);
        var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
        chart.draw(stuff, options);
@@ -150,6 +120,7 @@ function cap(string)
      			rows.push([k,1]);         			
      		}
      	});
+ 		console.log(rows);
  		stuff.addRows(rows);
 
        var options = {
@@ -178,31 +149,16 @@ function cap(string)
      	});
 		stuff = google.visualization.arrayToDataTable(stuff);
      	var chart = new google.visualization.Table(document.getElementById('chart_div'));
+     	console.log(stuff);
      	chart.draw(stuff, null);
      }
-	</script>
-	<div id="filter-wrap-wrap">
-    <div id="filter-wrap">
-	    <h3>Filter</h3>
-	    <div class="filter">
-		    <div class='dropzone draggy a'>Drag Stat Here</div>
-		    <select name="operator" class="b">
-		      <option value="lt">&lt;</option>
-		      <option value="et">=</option>
-		      <option value="gt">&gt;</option>
-		    </select>
-		    <input type="text" name="compare" class="c" />
-		    <button class="filter-close">&times;</button>
-	    </div>
-    </div>
-	<button class="update-filter">Update</button>
-	</div>
-	<div id="chart-wrap">
+    </script>
+    <div id="chart-wrap">
 	    <div id="chart-y"></div>
 	    <div id="chart_div">Select a chart type on the left, then fill in the X and Y axes.</div>
 	    <div id="chart-x"></div>
-	</div>
-	<h3>Chart Type</h1>
+    </div>
+    <h3>Chart Type</h1>
 	<div class="chart-types btn-group btn-group-vertical">
 	  <div class="btn-group">
 	    <button type="button" class="chart-type btn btn-default" data-x="1" data-func="statistics">Statistics</button>
@@ -223,143 +179,73 @@ function cap(string)
 	    <button type="button" class="chart-type btn btn-default" id="tabler" data-func="table">Table</button>
 	  </div>
 	</div>
-	<h3><%= cap(tag) %> Data</h1>
-	<p>
-	<% 
-	var i = 0;
-	keys.forEach(function(key){ 
-	i++;
-	%>
-	<div class="key" data-key="<%= escape(key) %>">
-	<div class="draggable draggy"  id="key<%= i %>"  data-key="<%= escape(key) %>"><%= cap(key) %></div>
-	</div>
-	<%	}); %>
-	</p>
-	<style type="text/css">
-	.dragee{
-		position: fixed;
-	}
-	*{
-		-khtml-user-select: none;
-		-moz-user-select: none;
-		-ms-user-select: none;
-		user-select: none;
-		-webkit-touch-callout: none;
-		-webkit-user-select: none;
-	}
-	</style>
-	<script type="text/javascript">
-	jQuery.fn.toHtmlString = function () {
-		return $('<div></div>').html($(this).clone()).html();
-	};
-	$(document).ready(function(){
-		$template = $(".filter").clone();
-		$(".update-filter").click(function(){
-			chartify();
-		});
-		$(".chart-type").click(function(){
-			charttype = $(this).data('func');
+    <h3><%= cap(tag) %> Data</h1>
+    <p>
+    <% 
+    var i = 0;
+    keys.forEach(function(key){ 
+    i++;
+    %>
+    <div class="key" data-key="<%= escape(key) %>">
+    <div class="draggable draggy"  draggable="true" id="key<%= i %>"  data-key="<%= escape(key) %>"><%= cap(key) %></div>
+    </div>
+    <%	}); %>
+    </p>
+    <script type="text/javascript">
+    $(function(){
+    	$(".key").click(function(){
+    		chosen = $(this);
+    		$(this).find('.draggable').addClass("selected");
+    	});
+    	$(".chart-type").click(function(){
     		$("#chart_div").html("Drag in data fields into the axes.");
     		$("#chart_div").removeClass("scrollok");
-			$(".chart-type").removeClass("active");
-			$(this).addClass("active");
-			var dropzone = "<div class='dropzone draggy nonfilter'>Drag Stat Here</div>";
-			var x = $(this).data('x');
-			var y = $(this).data('y');
-			$("#chart-x").html("");
-			$("#chart-y").html("");
-			if (x){
-				$("#chart-x").append(dropzone);
-			}
-			if (y){
-				$("#chart-y").append(dropzone);
-			}
+    		charttype = $(this).data('func');
+    		$(".chart-type").removeClass("active");
+    		$(this).addClass("active");
+    		var dropzone = "<div class='dropzone draggy'>Drag Stat Here</div>";
+    		var x = $(this).data('x');
+    		var y = $(this).data('y');
+    		$("#chart-x").html("");
+    		$("#chart-y").html("");
+    		if (x){
+    			$("#chart-x").append(dropzone);
+    		}
+    		if (y){
+    			$("#chart-y").append(dropzone);
+    		}
+	    	$(".dropzone").click(function(){
+	    		if (chosen){
+	    			$(this).html(cap(chosen.data("key")));
+	    			$(this).data("key",chosen.data("key"));
+	    			$(this).addClass("filled");
+	    			chosen = null;
+	    			$('.draggable').removeClass("selected");
+	    			if ($(".filled").size() == $(".dropzone").size()){
+	    				chartify();
+	    			}
+	    		}
+	    	});
 	    	if (charttype=="table"){
     			$("#chart_div").addClass("scrollok");
 	    		chartify();
 	    	}
-		});
-		var holding = false;
-		var draggee;
-		$(".key").mousedown(function(e){
-			holding = true;
-			draggee = $($(this).toHtmlString());
-			draggee.addClass("dragee");
-			$("html").append(draggee);
-			draggee.css({
-				"top":e.pageY - draggee.height()/2.0,
-				"left":e.pageX - draggee.width()/2.0
-			});
-		});
-		$(window).mousemove(function(e){
-			if(holding){
-				draggee.css({
-					"top":e.pageY - draggee.height()/2.0,
-					"left":e.pageX - draggee.width()/2.0
-				});
-			}
-		});
-		$(window).mouseup(function(){
-
-			if(holding){
-				holding = false;
-				var dropzones = $(".dropzone");
-				for (var i = 0; i < dropzones.length; i++) {
-					var dx = Math.abs(draggee.offset().left - $(dropzones[i]).offset().left);
-					var dy = Math.abs(draggee.offset().top - $(dropzones[i]).offset().top);
-					if(dx < 100 && dy < 30){
-						$(dropzones[i]).html(cap(draggee.data("key")));
-						$(dropzones[i]).data("key",draggee.data("key"));
-						if (timeToChart()){
-							chartify();
-						}
-						if (!$(dropzones[i]).hasClass("nonfilter") && !$(dropzones[i]).hasClass("filled")) {
-							$("#filter-wrap").append($($template).clone());
-							fixClose();
-						}
-						$(dropzones[i]).addClass("filled");
-						draggee.remove();
-					}
-				};
-			}
-
-			$(".dragee").remove();
-		});
-		fixClose();
-	});
-	var timeToChart = function(){
-		if ($(".filled.nonfilter").size() > 0 && $(".filled.nonfilter").size() == $(".dropzone.nonfilter").size()){
-			return true;
-		} else {
-			return false;
-		}
-	}
-	var fixClose = function(){
-		$(".filter-close").click(function(){
-			$(this).parent().remove();
-			if (($(".filter-close").size() - $(".filter-close").parent().find(".filled").size()) == 0){
-				$("#filter-wrap").append($($template).clone());
-			}
-		});
-	}
-	var chartify = function(){
-		if (timeToChart() || charttype == "table"){
-			filterdata();
-			console.log("chart updating to "+charttype);
-	    	if (charttype=="histogram"){
-	    		histogram($("#chart-x .dropzone").data("key"));
-	    	} else if (charttype=="piechart"){
-	    		piechart($("#chart-x .dropzone").data("key"));
-	    	} else if (charttype=="statistics"){
-	    		statistics($("#chart-x .dropzone").data("key"));
-	    	} else if (charttype=="bargraph"){
-	    		bargraph($("#chart-y .dropzone").data("key"));
-	    	} else if (charttype=="scatterplot"){
-	    		scatterplot($("#chart-x .dropzone").data("key"),$("#chart-y .dropzone").data("key"));
-	    	} else if (charttype=="table"){
-	    		table();
-	    	} 
-	    }
-	}
-	</script>
+    	});
+    });
+    var chartify = function(){
+    	if (charttype=="histogram"){
+    		histogram($("#chart-x .dropzone").data("key"));
+    	} else if (charttype=="piechart"){
+    		piechart($("#chart-x .dropzone").data("key"));
+    	} else if (charttype=="statistics"){
+    		statistics($("#chart-x .dropzone").data("key"));
+    	} else if (charttype=="bargraph"){
+    		bargraph($("#chart-y .dropzone").data("key"));
+    	} else if (charttype=="scatterplot"){
+    		scatterplot($("#chart-x .dropzone").data("key"),$("#chart-y .dropzone").data("key"));
+    	} else if (charttype=="table"){
+    		table();
+    	} 
+    }
+    </script>
 <%= include part_foot %>
