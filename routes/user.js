@@ -27,7 +27,7 @@ exports.service_create = function(req, res){
 			if(err){error(res, "There was an error. Please try again."); return;}
 			res.app.get('db').users.save({email:req.body.email, user_name:req.body.user_name, API_KEY:GUID, password:hash}, function(err){
 				if(err){error(res, "There was an error. Please try again."); return;}
-				res.cookie('user', JSON.stringify(user[0]), {signed: true});
+				res.cookie('user', JSON.stringify({email:req.body.email, user_name:req.body.user_name, API_KEY:GUID, password:hash}), {signed: true});
 				res.redirect("/");
 			});
 		});
