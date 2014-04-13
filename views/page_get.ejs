@@ -1,0 +1,30 @@
+<%= include part_head %>
+<div class="content" >
+	<div class="col-sm-12 col-xs-12">
+		<h1>Getting Started</h1>
+	</div>	
+	<div class="col-sm-6 col-xs-12 base right-bottom-edge active">
+		<h2>Remote Service</h2>
+		<p><a href="/auth?m=Welcome aboard!">Sign up</a></p>
+		<p><a href="/settings">Get your API_KEY</a></p>
+		<p><a href="/js/openTrack.js">Download the client JS library</a></p>
+		<pre>//log data to the server	
+OT.log(tag, data, API_KEY[, callback]);
+//simple as that</pre>
+	</div>
+		<div class="col-sm-6 col-xs-12 base right-bottom-edge active">
+		<h2>Local Service</h2>
+		<p>install mongodb</p>
+		<p>install node.js</p>
+		<p><a href="https://github.com/lucasmullens/opentrack">Clone on github!</a></p>
+		<pre>$ cd opentrack</pre>
+		<pre>$ node app</pre>
+		<pre>//in Client application
+OT.domain = "http://localhost:xxxx";//3000 is default	
+OT.log(tag, data, API_KEY[, callback]);
+//simple as that</pre>
+		<p>npm install coming soon!</p>
+	</div>
+	<div class="clearfix"></div>
+</div>
+<%= include part_foot %>
