@@ -156,3 +156,29 @@ h1{
 	text-decoration: none;
 	color: #ff6600;
 }
+#filter-wrap-wrap{
+	width:80%;
+	float: right;
+	margin-right:10px;
+}
+#filter-wrap h3{
+	margin-top:0;
+
+}
+.filter{
+	margin-bottom:1em;
+}
+.filter .draggy{
+	display:inline;
+}
+.filter select{
+	display:inline;
+	font-size:19px;
+	margin-top: 1px;
+}
+.filter input{
+	display:inline;
+}
+.update-filter{
+	margin-bottom: 1em;
+}

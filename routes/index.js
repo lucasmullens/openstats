@@ -19,7 +19,10 @@ exports.get = function(req, res){
 exports.tags = function(req, res){
 	if(req.signedCookies.user==undefined)
 		{res.redirect("/auth?m=You need to sign in to view tags."); return;}
-	res.app.get('db').data.find({API_KEY:"test"}, function(err, data){
+
+	var key = JSON.parse(req.signedCookies.user).API_KEY;
+	console.log(key);
+	res.app.get('db').data.find({API_KEY:key}, function(err, data){
 	// res.app.get('db').data.find({API_KEY:JSON.parse(req.signedCookies.user).API_KEY}, function(err, data){
 		var tags = {};
 		console.log(data);

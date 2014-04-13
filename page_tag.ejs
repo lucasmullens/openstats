@@ -1,0 +1,197 @@
+<%
+function cap(string)
+{
+	return string.charAt(0).toUpperCase() + string.slice(1);
+}
+%>
+<%= include part_head %>
+
+<style type="text/css">
+	
+</style>
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	<script type="text/javascript">
+	function cap(string)
+	{
+		return string.charAt(0).toUpperCase() + string.slice(1);
+	}
+	google.load("visualization", "1", {packages:["corechart"]});
+		 // google.setOnLoadCallback();
+		 var histogram = function(key) {
+		 	var data = <%- JSON.stringify(data) %>;
+		 	var array = new Array();
+		 	array.push([cap(key)]);
+		 	$.each(data,function(i,e){
+		 		var f = JSON.parse(e.data);
+		 		array.push([f[key]]);
+		 	});
+		   var stuff = google.visualization.arrayToDataTable(array);
+
+		   var options = {
+			 title: cap(key),
+			 legend: { position: 'none' },
+		   };
+
+		   var chart = new google.visualization.Histogram(document.getElementById('chart_div'));
+		   chart.draw(stuff, options);
+		 }
+
+
+
+
+
+
+		 var piechart = function(key) {
+			var stuff = new google.visualization.DataTable();
+		 	var data = <%- JSON.stringify(data) %>;
+	 		stuff.addColumn("string", key.toString());
+	 		stuff.addColumn("number", "Count");
+	 		var rows = [];
+		 	$.each(data,function(i,e){
+		 		var f = JSON.parse(e.data);
+		 		var k = f[key].toString();
+		 		var found = false;
+		 		for (var i = 0; i < rows.length; i++) {
+		 			if (rows[i][0] == k){
+		 				rows[i][1]++;
+		 				found = true;
+		 			}
+		 		};
+		 		if (!found){
+		 			rows.push([k,1]);		 			
+		 		}
+		 	});
+	 		console.log(rows);
+	 		stuff.addRows(rows);
+
+		   var options = {
+			 title: cap(key)
+		   };
+
+		   var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+		   chart.draw(stuff, options);
+		 }
+	</script>
+	<div id="chart-wrap">
+		<div id="chart-y">Y-Axis</div>
+		<div id="chart_div">Select a chart type on the left.</div>
+		<div id="chart-x">X-Axis</div>
+	</div>
+	<h3>Chart Type</h1>
+	<div class="chart-types btn-group btn-group-vertical">
+	  <div class="btn-group">
+		<button type="button" class="chart-type btn btn-default" data-x="1" data-func="histogram">Histogram</button>
+	  </div>
+	  <div class="btn-group">
+		<button type="button" class="chart-type btn btn-default" data-x="1" data-func="piechart">Pie Chart</button>
+	  </div>
+	  <div class="btn-group">
+		<button type="button" class="chart-type btn btn-default" data-x="1" data-y="1" data-func="bargraph">Bar Graph</button>
+	  </div>
+	</div>
+	<h3><%= cap(tag) %> Data</h1>
+	<p>
+	<% 
+	var i = 0;
+	keys.forEach(function(key){ 
+	i++;
+	%>
+	<div class="key" data-key="<%= escape(key) %>">
+	<div class="draggable draggy"  id="key<%= i %>"  data-key="<%= escape(key) %>"><%= cap(key) %></div>
+	</div>
+	<%	}); %>
+	</p>
+	<style type="text/css">
+	.dragee{
+		position: fixed;
+	}
+	</style>
+	<script type="text/javascript">
+	jQuery.fn.toHtmlString = function () {
+		return $('<div></div>').html($(this).clone()).html();
+	};
+	// var moving = false;
+	// var chosen;
+	$(document).ready(function(){
+		// $(".key").click(function(){
+		// 	chosen = $(this);
+	 //		moving = true;
+	 //		var draggingPill = $($(this).html());
+	 //		draggingPill.addClass("undermouse");
+	 //		$("html").append(draggingPill);
+	 //		$(this).find('.draggable').addClass("selected");
+		// });
+		$(".chart-type").click(function(){
+			charttype = $(this).data('func');
+			$(".chart-type").removeClass("active");
+			$(this).addClass("active");
+			var dropzone = "<div class='dropzone draggy'>Drag Stat Here</div>";
+			var x = $(this).data('x');
+			var y = $(this).data('y');
+			$("#chart-x").html("");
+			$("#chart-y").html("");
+			if (x){
+				$("#chart-x").append(dropzone);
+			}
+			if (y){
+				$("#chart-y").append(dropzone);
+			}
+		});
+		var holding = false;
+		var draggee;
+		$(".key").mousedown(function(){
+			holding = true;
+			// $('<div>').append($('#item-of-interest').clone()).html();
+			// draggee = $($(this).html());
+			// draggee = $('<div>').append($(this).clone()).html();
+			draggee = $($(this).toHtmlString());
+			draggee.addClass("dragee");
+			$("html").append(draggee);
+			console.log("start");
+		});
+		$(window).mousemove(function(e){
+			if(holding){
+				console.log("moving");
+				draggee.css({
+					"top":e.pageY - draggee.height()/2.0,
+					"left":e.pageX - draggee.width()/2.0
+				});
+			}
+		});
+		$(window).mouseup(function(){
+			if(holding){
+				holding = false;
+				var dropzones = $(".dropzone");
+				console.log(dropzones);
+				for (var i = 0; i < dropzones.length; i++) {
+					console.log(draggee.offset().left +" "+ $(dropzones[i]).offset().left);
+					var dx = Math.abs(draggee.offset().left - $(dropzones[i]).offset().left);
+					var dy = Math.abs(draggee.offset().top - $(dropzones[i]).offset().top);
+					if(dx < 100 && dy < 100){
+						$(dropzones[i]).html(cap(draggee.data("key")));
+						$(dropzones[i]).data("key",draggee.data("key"));
+						$(dropzones[i]).addClass("filled");
+						// $('.draggable').removeClass("selected");
+						
+						console.log($(".filled").size());
+						console.log($(".dropzone").size());
+						if ($(".filled").size() == $(".dropzone").size()){
+							chartify();
+						}
+						draggee.remove();
+					}
+				};
+			}
+
+			$(".dragee").remove();
+		});
+	});
+	var chartify = function(){
+		if (charttype=="histogram"){
+			histogram($("#chart-x .dropzone").data("key"));
+		} else if (charttype=="piechart"){
+			piechart($("#chart-x .dropzone").data("key"));
+		} 
+	}
+	</script>
+<%= include part_foot %>

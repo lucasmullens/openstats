@@ -76,7 +76,8 @@ app.all('*', function(req, res, next) {
 app.get('/', routes.index);
 app.get('/tags/:tag', function(req,res){
 	var db = req.app.get('db');
-	var key = "test";
+	var key = JSON.parse(req.signedCookies.user).API_KEY;
+	console.log(key);
 	var tag = req.params.tag;
 	db.data.find({"API_KEY":key, "tag":tag}).toArray( function(err,result){
 		var data = JSON.parse(result[0].data);
